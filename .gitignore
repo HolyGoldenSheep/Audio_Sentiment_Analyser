@@ -1,0 +1,19 @@
+# Environments
+.venv/
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+
+# Tests
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
