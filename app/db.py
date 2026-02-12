@@ -21,16 +21,16 @@ async def get_user_by_username(username: str):
 
 
 async def create_user(username: str, password: str, email: str):
-    print("➡️ create_user() CALLED")
+    print(" create_user() CALLED")
 
     existing = await get_user_by_username(username)
-    print("➡️ existing user:", existing)
+    print(" existing user:", existing)
 
     if existing:
         raise ValueError("Username already exists")
 
     hashed_pw = pwd_context.hash(password)
-    print("➡️ hashed password generated")
+    print(" hashed password generated")
 
     user_doc = {
         "username": username,
@@ -38,12 +38,12 @@ async def create_user(username: str, password: str, email: str):
         "email": email
     }
 
-    print("➡️ inserting into MongoDB...")
+    print(" inserting into MongoDB...")
     result = await users_collection.insert_one(user_doc)
-    print("➡️ insert result:", result.inserted_id)
+    print(" insert result:", result.inserted_id)
 
     user_doc["_id"] = result.inserted_id
-    print("➡️ create_user() DONE")
+    print(" create_user() DONE")
     return user_doc
 
 

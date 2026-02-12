@@ -68,6 +68,7 @@ async def debug_create_user():
     test_user = {"username": "test_user_debug", "password": "123"}
     result = await db["users"].insert_one(test_user)
     return {"inserted_id": str(result.inserted_id)}
+
 @app.get("/debug/where-am-i-writing")
 async def where_am_i_writing():
     return {
