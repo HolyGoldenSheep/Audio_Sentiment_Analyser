@@ -1,0 +1,48 @@
+
+services:
+
+  api:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - prometheus
+    volumes:
+      - ./app:/app/app                  
+      - ./app/Model:/app/app/Model      
+    environment:
+      - MODEL_PATH=/app/app/Model/emotion_model
+      - MONGO_URL=mongodb://mongo:27017
+      - DB_NAME=audio_sentiment_db
+      - SECRET_KEY=change_this_in_prod
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

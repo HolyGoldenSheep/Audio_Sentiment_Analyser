@@ -78,6 +78,8 @@ pyasn1==0.6.1
 pycparser==2.23
 pydantic==2.12.4
 pydantic_core==2.41.5
+prometheus-client
+prometheus-fastapi-instrumentator
 pydub==0.25.1
 Pygments==2.19.2
 pymongo==4.15.4
