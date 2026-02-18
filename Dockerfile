@@ -1,13 +1,29 @@
 FROM python:3.13-slim
 
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    libffi-dev \
+    libssl-dev \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
 WORKDIR /app
 
-COPY requirements.txt /app/requirements.txt
+# Copy requirements first for caching
+COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Upgrade pip and install dependencies
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
-COPY . /app
+# Copy app code
+COPY . .
 
-EXPOSE 8000
+# Expose port
+ENV PORT 10000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Command to run
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "10000"]
