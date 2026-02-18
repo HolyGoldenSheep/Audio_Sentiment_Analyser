@@ -57,7 +57,6 @@ from starlette.requests import Request
 registry = CollectorRegistry()
 
 # CONFIG
-SECRET_KEY = os.getenv("SECRET_KEY", "CHANGE_THIS_IN_PROD_123")
 MODEL_PATH = os.getenv("MODEL_PATH", "app/Model/emotion_model")
 
 # Lifespan 

@@ -7,8 +7,8 @@ from io import BytesIO
 from transformers import Wav2Vec2Processor, Wav2Vec2Model
 import tensorflow as tf
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-
+device = torch.device("cpu") 
+torch.set_num_threads(1)
 
 class SentimentModel:
 
@@ -19,16 +19,31 @@ class SentimentModel:
 
     def __init__(self, classifier_path: str):
         print("Loading Wav2Vec2 (facebook/wav2vec2-base)...")
-        self.processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base")
-        self.wav2vec = Wav2Vec2Model.from_pretrained(
-            "facebook/wav2vec2-base"
-        ).to(device)
 
-        print(f"Loading classifier as TensorFlow SavedModel: {classifier_path}")
+        self.processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base")
+
+        base_model = Wav2Vec2Model.from_pretrained(
+            "facebook/wav2vec2-base"
+        )
+        base_model.eval()
+
+        print("Applying dynamic quantization (int8)...")
+
+        self.wav2vec = torch.quantization.quantize_dynamic(
+            base_model,
+            {torch.nn.Linear},
+            dtype=torch.qint8
+        )
+
+        self.wav2vec.to(device)
+
+        # Free original model memory
+        del base_model
+
+        print("Loading classifier as TensorFlow SavedModel:", classifier_path)
         self.classifier = tf.saved_model.load(classifier_path)
         self.infer = self.classifier.signatures["serving_default"]
 
-        # Resampler (SAFE: does NOT require FFmpeg)
         self.resampler = torchaudio.transforms.Resample(
             orig_freq=44100,
             new_freq=16000
@@ -61,7 +76,7 @@ class SentimentModel:
             waveform = self.resampler(waveform)
 
         inputs = self.processor(
-            waveform.squeeze().numpy(),
+            waveform.squeeze().cpu().numpy(),
             sampling_rate=16000,
             return_tensors="pt"
         ).input_values.to(device)
