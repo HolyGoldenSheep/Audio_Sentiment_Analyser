@@ -4,7 +4,7 @@ starlette==0.50.0
 uvicorn==0.38.0
 
 # Data validation
-pydantic==2.12.4
+pydantic[email]==2.12.4
 typing-extensions==4.15.0
 
 # MongoDB
