@@ -60,13 +60,16 @@ registry = CollectorRegistry()
 MODEL_PATH = os.getenv("MODEL_PATH", "app/Model/emotion_model")
 
 # Lifespan 
-@asynccontextmanager 
-async def lifespan(app: FastAPI): 
-    await connect_db()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+
+    if os.getenv("TESTING") != "1":
+        await connect_db()
 
     yield
 
-    await close_db()
+    if os.getenv("TESTING") != "1":
+        await close_db()
 
 # APP INIT
 app = FastAPI(
@@ -146,10 +149,9 @@ async def list_all_dbs():
 
 
 # LOAD MODEL
-print("Loading Sentiment Model...")
+print("Loading Sentiment Model..")
 sentiment_model = SentimentModel.load(MODEL_PATH)
-print("Model loaded successfully.")
-
+print("Model loaded successfully")
 
 # ENDPOINTS
 
@@ -212,13 +214,12 @@ async def model_metadata(user=Depends(get_current_user)):
 @app.post("/predict", response_model=PredictionResponse)
 async def predict_emotion(
     file: UploadFile = File(...),
-    current_user: dict | None = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user)
 ):
     Predict_Requests.inc()
     start_time = time.time()
 
     try:
-        # Input validation
         ALLOWED_AUDIO_TYPES = {
             "audio/wav", "audio/x-wav", "audio/mpeg", "audio/mp3", "audio/flac"
         }
@@ -228,7 +229,6 @@ async def predict_emotion(
             raise HTTPException(status_code=400, detail="Unsupported audio format")
 
         audio_bytes = await file.read()
-
         Audio_Size.observe(len(audio_bytes))
 
         MAX_AUDIO_SIZE = 20 * 1024 * 1024
@@ -236,24 +236,20 @@ async def predict_emotion(
             Predict_Errors.inc()
             raise HTTPException(status_code=413, detail="Audio file too large max 20MB")
 
-        if not current_user:
-            Predict_Errors.inc()
-            raise HTTPException(status_code=401, detail="Not authenticated")
+        if sentiment_model is None:
+            raise HTTPException(status_code=503, detail="Model not loaded")
 
         result = sentiment_model.predict_bytes(audio_bytes)
-    
-        # monitoring pred total
+
         Model_predictions_total.inc()
 
-        prediction_doc = {
-            "user_id": ObjectId(current_user["_id"]),
-            "label": result["label"],
-            "confidence": result["confidence"],
-            "filename": file.filename,
-            "created_at": datetime.utcnow()
-        }
-
-        await db["predictions"].insert_one(prediction_doc)
+        await save_prediction(
+            user_id=ObjectId(current_user["_id"]),
+            username=current_user["username"],
+            emotion=result["label"],
+            confidence=result["confidence"],
+            filename=file.filename
+        )
 
         return {
             "label": result["label"],
