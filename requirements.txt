@@ -41,3 +41,7 @@ pytest==9.0.2
 httpx==0.28.1
 pytest-asyncio
 anyio
+
+# App
+flask
+requests

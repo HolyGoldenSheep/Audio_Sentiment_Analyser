@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Résultat{% endblock %}
+
+{% block content %}
+
+<h2>Résultat de l'analyse</h2>
+
+<p><strong>Emotion :</strong> {{ result.label }}</p>
+<p><strong>Confiance :</strong> {{ result.confidence }}</p>
+
+<a href="/">Nouvelle analyse</a>
+
+{% endblock %}

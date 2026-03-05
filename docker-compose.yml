@@ -15,8 +15,18 @@ services:
       - MODEL_PATH=/app/app/Model/emotion_model
       - MONGO_URL=mongodb://mongo:27017
       - DB_NAME=audio_sentiment_db
-      - SECRET_KEY=change_this_in_prod
+      - SECRET_KEY=keyfordiplomaandtesting
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+  webapp:
+    build: ./webapp
+    container_name: flask_app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - api
+    environment:
+      - FLASK_SECRET_KEY=hereissecretkeyfordiplomanandtesting
+      - API_BASE_URL=http://api:8000
 
   prometheus:
     image: prom/prometheus
@@ -46,3 +56,4 @@ services:
 
 volumes:
   mongo_data:
+

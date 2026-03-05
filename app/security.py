@@ -19,7 +19,7 @@ def get_password_hash(password: str) -> str:
 
 
 # JWT CONFIGURATION
-SECRET_KEY = os.getenv("SECRET_KEY", "CHANGE_THIS_IN_PRODUCTION_123456789")
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
