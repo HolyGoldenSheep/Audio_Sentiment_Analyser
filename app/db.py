@@ -8,9 +8,8 @@ TESTING = os.getenv("TESTING") == "1"
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# ==============================
-# TEST MODE (NO MONGO, NO MOTOR)
-# ==============================
+
+# Test mode
 if TESTING:
 
     _fake_users = []
@@ -72,9 +71,9 @@ if TESTING:
     DB_NAME = None
 
 
-# ==============================
-# PRODUCTION MODE (REAL MONGO)
-# ==============================
+
+# Production mode
+
 else:
     from motor.motor_asyncio import AsyncIOMotorClient
 

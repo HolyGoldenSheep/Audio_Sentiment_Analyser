@@ -18,7 +18,7 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
-# JWT CONFIGURATION
+# JWT configuration
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
@@ -26,7 +26,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
 
-# JWT CREATION
+# JWT creation
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     """Create a JWT access token."""
     to_encode = data.copy()
@@ -41,7 +41,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 
-# AUTHENTICATION
+# Authentication
 async def authenticate_user(username: str, password: str):
     """
     Validate username + password from MongoDB asynchronously.

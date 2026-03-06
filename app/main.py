@@ -53,10 +53,10 @@ from fastapi.staticfiles import StaticFiles
 from starlette.requests import Request
 
 
-# Collecter Registry prometheus not liking double metrics
+# Collecter Registry 
 registry = CollectorRegistry()
 
-# CONFIG
+# Config
 MODEL_PATH = os.getenv("MODEL_PATH", "app/Model/emotion_model")
 
 # Lifespan 
@@ -148,12 +148,12 @@ async def list_all_dbs():
     return {"databases": dbs}
 
 
-# LOAD MODEL
+# Load model
 print("Loading Sentiment Model..")
 sentiment_model = SentimentModel.load(MODEL_PATH)
 print("Model loaded successfully")
 
-# ENDPOINTS
+# Endpoints
 
 @app.post("/auth/signup")
 async def signup(user: UserCreate):
