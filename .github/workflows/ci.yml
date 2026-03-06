@@ -27,12 +27,13 @@ jobs:
       - name: Run tests
         env:
           TESTING: "1"
+          SECRET_KEY: "ci_test_secret_key"
         run: |
-          python -m pytest -v 
+          python -m pytest -v
 
       - name: Build Docker image
-        run: 
-          docker build -t final_project_sentiment_analysis . 
+        run: |
+          docker build -t final_project_sentiment_analysis .
 
       - name: Simulated deployment
         run: echo "Deployment successful"
