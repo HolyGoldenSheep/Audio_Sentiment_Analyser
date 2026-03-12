@@ -1,46 +1,39 @@
 # Audio Sentiment Analyser
-Présentation du projet
 
-Audio Sentiment Analyser est une application permettant de détecter automatiquement les émotions présentes dans un fichier audio à l’aide d’un modèle d’intelligence artificielle.
+API et application web permettant de **détecter les émotions dans un fichier audio** à l’aide d’un modèle d’intelligence artificielle.
 
-Le système est conçu comme une architecture applicative complète comprenant :
+Le projet met en place une **architecture complète d'application IA** incluant :
 
-une API d’inférence basée sur FastAPI
+- une **API d’inférence FastAPI**
+- une **interface utilisateur Flask**
+- une **base de données MongoDB**
+- un **monitoring Prometheus + Grafana**
+- une **pipeline CI/CD avec GitHub Actions**
+- une **infrastructure conteneurisée Docker**
 
-une interface web Flask
+Ce projet s’inscrit dans une démarche **MLOps** visant à industrialiser le cycle de vie d’une application d’intelligence artificielle.
 
-une base de données MongoDB
-
-un système de monitoring avec Prometheus et Grafana
-
-une chaîne CI/CD automatisée via GitHub Actions
-
-un environnement conteneurisé avec Docker
-
-L’objectif est de transformer un signal audio brut en information exploitable (émotion détectée et score de confiance) dans une architecture compatible avec une utilisation professionnelle.
+---
 
 # Architecture du projet
-
-Le projet est organisé selon une architecture modulaire permettant de séparer les différentes responsabilités techniques.
-
 Audio_Sentiment_Analyser/
 │
-├── app/                # API FastAPI (service d'inférence IA)
-│   ├── main.py
-│   ├── models/
-│   ├── services/
-│   └── utils/
+├── app/ # API FastAPI (service d'inférence IA)
+│ ├── main.py
+│ ├── models/
+│ ├── services/
+│ └── utils/
 │
-├── webapp/             # Interface utilisateur Flask
-│   ├── app.py
-│   ├── templates/
-│   └── static/
+├── webapp/ # Interface utilisateur Flask
+│ ├── app.py
+│ ├── templates/
+│ └── static/
 │
-├── tests/              # Tests automatisés (Pytest)
+├── tests/ # Tests automatisés (Pytest)
 │
-├── monitoring/         # Configuration Prometheus / Grafana
+├── monitoring/ # Configuration Prometheus / Grafana
 │
-├── docker/             # Configuration Docker
+├── docker/ # Configuration Docker
 │
 ├── docker-compose.yml
 ├── Dockerfile
@@ -49,91 +42,82 @@ Audio_Sentiment_Analyser/
 
 Cette architecture permet :
 
-de séparer l’inférence IA de l’interface utilisateur
+- une **séparation claire entre l’API et l’interface**
+- une **meilleure maintenabilité**
+- une **facilité de déploiement**
+- l’intégration d’outils de **supervision et monitoring**
 
-de faciliter le déploiement et la maintenance
+---
 
-d’intégrer facilement des outils de supervision.
+# ⚙️ Technologies utilisées
 
-# Fonctionnement du système
+## Backend API
 
-Le fonctionnement global de l’application repose sur le flux suivant :
+- FastAPI
+- Python
+- MongoDB (Motor async driver)
+- JWT Authentication
 
-L’utilisateur se connecte à l’interface web.
+## Machine Learning
 
-Il téléverse un fichier audio.
+- TensorFlow
+- Wav2Vec2
+- Librosa
+- NumPy
 
-L’interface envoie le fichier à l’API via une requête HTTP sécurisée.
+## Interface utilisateur
 
-L’API traite le fichier audio et applique le modèle d’intelligence artificielle.
+- Flask
+- HTML / Jinja2
+- CSS
 
-L’émotion détectée et le score de confiance sont retournés à l’utilisateur.
+## Monitoring
 
-Les résultats sont enregistrés dans la base de données MongoDB.
+- Prometheus
+- Grafana
+- Flask Monitoring Dashboard
 
-# Technologies utilisées
-Backend API
+## Infrastructure
 
-FastAPI
+- Docker
+- Docker Compose
+- GitHub Actions (CI/CD)
 
-Python
+---
 
-Motor (MongoDB Async Driver)
+# 🔁 Fonctionnement de l’application
 
-JWT Authentication
+Le système fonctionne selon le flux suivant :
 
-Machine Learning
+1. L’utilisateur se connecte à l’interface web.
+2. Il téléverse un fichier audio.
+3. L’interface envoie le fichier à l’API via une requête HTTP sécurisée.
+4. L’API traite le fichier audio et applique le modèle d’intelligence artificielle.
+5. L’émotion détectée et le score de confiance sont retournés à l’utilisateur.
+6. Les résultats sont enregistrés dans la base de données MongoDB.
 
-TensorFlow
+---
 
-Wav2Vec2
+# 🖥 Installation du projet
 
-Librosa
+## Prérequis
 
-NumPy
+Avant d’installer le projet :
 
-Interface utilisateur
+- Python 3.10+
+- pip
+- MongoDB
+- Docker (optionnel mais recommandé)
 
-Flask
+---
 
-HTML / Jinja2
-
-CSS
-
-Monitoring
-
-Prometheus
-
-Grafana
-
-Flask Monitoring Dashboard
-
-Infrastructure
-
-Docker
-
-Docker Compose
-
-GitHub Actions (CI/CD)
-
-# Installation du projet
-Prérequis
-
-Avant d’installer le projet, il est nécessaire d’avoir :
-
-Python 3.10+
-
-pip
-
-MongoDB
-
-Docker (optionnel mais recommandé)
-
-Installation en environnement local
+## Installation locale
 
 Créer un environnement virtuel :
 
+```bash
 python -m venv .venv
+```
 
 Activer l’environnement :
 
@@ -148,73 +132,67 @@ Windows
 Installer les dépendances :
 
 pip install -r requirements.txt
-Configuration des variables d’environnement
+
+# Configuration
 
 Créer un fichier .env à la racine du projet.
 
 Exemple :
 
-SECRET_KEY=your_secret_key
-MONGO_URI=mongodb://localhost:27017/audio_sentiment
-JWT_SECRET=your_jwt_secret
-API_BASE_URL=http://localhost:8000
-
-Ces variables permettent de configurer :
-
-la connexion à la base de données
-
-la sécurité de l’application
-
-l’authentification JWT.
-
-Lancer l’API FastAPI
+```
+SECRET\_KEY=your\_secret\_key
+JWT\_SECRET=your\_jwt\_secret
+MONGO\_URI=mongodb://localhost:27017/audio\_sentiment
+API\_BASE\_URL=http://localhost:8000
+```
+# Lancer l’API FastAPI
 
 Démarrer le serveur :
 
 uvicorn app.main:app --reload
 
-L’API sera accessible à l’adresse :
+API disponible sur :
 
 http://localhost:8000
 
 Documentation interactive :
 
 http://localhost:8000/docs
-Lancer l’interface web
+
+# Lancer l’interface web
 
 Depuis le dossier webapp :
 
 python app.py
 
-L’application web sera accessible sur :
+Interface accessible sur :
 
 http://localhost:5000
-Utilisation de l’API
+
+# Utilisation de l’API
 Authentification
 
 Endpoint :
 
 POST /login
 
-Permet d’obtenir un token JWT.
-
-Exemple de réponse :
+Réponse :
 
 {
-  "access_token": "...",
+  "access_token": "token",
   "token_type": "bearer"
 }
 
-Ce token doit être utilisé dans l’en-tête des requêtes :
+Le token doit être utilisé dans les requêtes :
 
 Authorization: Bearer <token>
-Prédiction d’émotion
+# Prédiction d’émotion
 
 Endpoint :
 
 POST /predict
 
-Paramètres :
+Paramètre :
 
 fichier audio (multipart)
 
@@ -224,7 +202,7 @@ Réponse :
   "emotion": "happy",
   "confidence": 0.87
 }
-Tests automatisés
+# Tests automatisés
 
 Les tests sont réalisés avec Pytest.
 
@@ -232,55 +210,45 @@ Lancer les tests :
 
 pytest
 
-Les tests vérifient :
+Les tests couvrent :
 
-l’authentification
+- authentification
+- prédiction
+- validation des fichiers
+- gestion des erreurs
 
-la prédiction
-
-les erreurs d’accès
-
-la validation des fichiers audio.
-
-Intégration continue (CI)
+# Intégration continue (CI)
 
 Le projet utilise GitHub Actions pour automatiser :
 
-l’installation de l’environnement
+- l’installation de l’environnement
+- l’exécution des tests
+- la construction de l’image Docker
 
-l’exécution des tests
+Le pipeline se déclenche automatiquement lors :
 
-la construction de l’image Docker
+- d’un push
+- d’une pull request
 
-Le pipeline CI se déclenche automatiquement lors :
+# Conteneurisation Docker
 
-d’un push
-
-d’une pull request
-
-Conteneurisation avec Docker
-
-Construire l’image Docker :
+Construire l’image :
 
 docker build -t audio-sentiment-api .
 
-Lancer les services avec Docker Compose :
+Lancer les services :
 
 docker-compose up --build
 
-Les services démarrés :
+Services démarrés :
 
-API FastAPI
-
-Interface web
-
-MongoDB
-
-Prometheus
-
-Grafana
-
-Monitoring de l’application
+- API FastAPI
+- Interface web
+- MongoDB
+- Prometheus
+- Grafana
+- 
+# Monitoring
 
 Le système de supervision repose sur plusieurs outils.
 
@@ -288,76 +256,49 @@ Prometheus
 
 Collecte les métriques :
 
-temps de réponse des requêtes
-
-nombre de requêtes
-
-erreurs HTTP
-
-performances du modèle
+- nombre de requêtes
+- latence
+- erreurs HTTP
+- performances du modèle
 
 Grafana
 
 Permet de visualiser les métriques sous forme de dashboards.
-
 Adresse par défaut :
 
 http://localhost:3000
+
 Flask Monitoring Dashboard
 
 Permet de surveiller :
+- les endpoints
+- le temps de réponse
+- les exceptions
 
-les endpoints
+# Sécurité
 
-le temps de réponse
+Plusieurs mécanismes sont implémentés :
 
-les exceptions.
+- authentification JWT
+- validation des fichiers uploadés
+- contrôle d’accès aux endpoints
+- gestion des erreurs
 
-Sécurité
+# MLOps et amélioration continue
 
-L’application intègre plusieurs mécanismes de sécurité :
-
-authentification JWT
-
-validation du type MIME des fichiers
-
-limitation de taille des fichiers uploadés
-
-gestion des erreurs
-
-contrôle d’accès aux endpoints protégés.
-
-Monitoring du modèle (MLOps)
-
-Le système implémente une feedback loop.
+Le projet intègre une feedback loop.
 
 Après chaque prédiction :
 
-l’utilisateur peut confirmer ou corriger le résultat
+- l’utilisateur peut valider ou corriger le résultat
+- les données sont enregistrées dans MongoDB
+- es données peuvent être utilisées pour réentraîner le modèle
 
-les données sont enregistrées dans MongoDB
+Cela permet d’améliorer progressivement les performances du modèle.
 
-ces données peuvent servir à réentraîner le modèle.
-
-Cette approche permet d’améliorer progressivement la performance du modèle.
-
-Contribution
-
-Pour contribuer au projet :
-
-Fork du dépôt
-
-Création d’une branche
-
-Implémentation des modifications
-
-Création d’une Pull Request
-
-Auteur
-
+# Auteur
 Karl Benton
-Développeur IA
-
-Licence
-
 Projet réalisé dans le cadre du Titre Professionnel Développeur en Intelligence Artificielle (RNCP 37827).
+
+# Licence
+Projet pédagogique réalisé dans le cadre de la formation développeur IA.
