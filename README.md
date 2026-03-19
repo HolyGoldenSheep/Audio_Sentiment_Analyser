@@ -17,28 +17,28 @@ Ce projet s’inscrit dans une démarche **MLOps** visant à industrialiser le c
 
 # Architecture du projet
 Audio_Sentiment_Analyser/
-│
-├── app/ # API FastAPI (service d'inférence IA)
-│ ├── main.py
-│ ├── models/
-│ ├── services/
-│ └── utils/
-│
-├── webapp/ # Interface utilisateur Flask
-│ ├── app.py
-│ ├── templates/
-│ └── static/
-│
-├── tests/ # Tests automatisés (Pytest)
-│
-├── monitoring/ # Configuration Prometheus / Grafana
-│
-├── docker/ # Configuration Docker
-│
-├── docker-compose.yml
-├── Dockerfile
-├── requirements.txt
-└── README.md
+
+app/ # API FastAPI (service d'inférence IA)
+- main.py
+- models/
+- services/
+- utils/
+
+   webapp/ # Interface utilisateur Flask
+- app.py
+- templates/
+- static/
+
+   tests/ # Tests automatisés (Pytest)
+
+   monitoring/ # Configuration Prometheus / Grafana
+
+   docker/ # Configuration Docker
+
+   docker-compose.yml
+   Dockerfile
+   requirements.txt
+  README.md
 
 Cette architecture permet :
 
@@ -49,7 +49,7 @@ Cette architecture permet :
 
 ---
 
-# ⚙️ Technologies utilisées
+#  Technologies utilisées
 
 ## Backend API
 
@@ -85,7 +85,7 @@ Cette architecture permet :
 
 ---
 
-# 🔁 Fonctionnement de l’application
+#  Fonctionnement de l’application
 
 Le système fonctionne selon le flux suivant :
 
@@ -98,7 +98,7 @@ Le système fonctionne selon le flux suivant :
 
 ---
 
-# 🖥 Installation du projet
+#  Installation du projet
 
 ## Prérequis
 
