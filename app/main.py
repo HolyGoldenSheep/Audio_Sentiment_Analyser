@@ -127,27 +127,6 @@ Model_predictions_total = Counter(
     "Total number of Model predictions performed"
 )
 
-@app.get("/debug/create-test-user")
-async def debug_create_user():
-    test_user = {"username": "test_user_debug", "password": "123"}
-    result = await db["users"].insert_one(test_user)
-    return {"inserted_id": str(result.inserted_id)}
-
-@app.get("/debug/where-am-i-writing")
-async def where_am_i_writing():
-    return {
-        "mongo_url_used": MONGO_URL,
-        "db_name_used": DB_NAME,
-        "full_db_name_motor_sees": db.name,
-        "collections_in_this_db": await db.list_collection_names()
-    }
-@app.get("/debug/list-all-databases")
-async def list_all_dbs():
-    client = db.client
-    dbs = await client.list_database_names()
-    return {"databases": dbs}
-
-
 # Load model
 print("Loading Sentiment Model..")
 sentiment_model = SentimentModel.load(MODEL_PATH)
