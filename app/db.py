@@ -8,7 +8,6 @@ TESTING = os.getenv("TESTING") == "1"
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-
 # Test mode
 if TESTING:
 
@@ -69,8 +68,6 @@ if TESTING:
     db = None
     MONGO_URL = None
     DB_NAME = None
-
-
 
 # Production mode
 
